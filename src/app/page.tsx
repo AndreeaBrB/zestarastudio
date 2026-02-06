@@ -1,5 +1,3 @@
-"use strict";
-
 import { Sparkles, Mail } from "lucide-react";
 
 export default function ComingSoonPage() {
