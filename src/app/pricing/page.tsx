@@ -68,7 +68,6 @@ export default function PricingPage() {
             price: item.price,
             type: item.mode === "subscription" ? "subscription" : "credit_pack",
             credits: item.credits,
-            planName: item.name // Optional, only for subs
         })
     }
 
