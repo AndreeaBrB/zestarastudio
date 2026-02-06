@@ -78,72 +78,69 @@ export function MusicGenerator() {
             // Combine mood and prompt
             const finalPrompt = `${mood} style. ${prompt}`.trim()
 
-            const response = await fetch("/api/generate/music", {
+            // 1. Start Task
+            const startResponse = await fetch("/api/generate/music", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     prompt: finalPrompt,
-                    duration,
-                    mode: "track"
+                    duration, // Note: Suno duration is usually fixed or model dependent, passing anyway
                 }),
             })
 
-            console.log("Music API Response Status:", response.status, response.statusText);
-            const responseText = await response.text();
-            console.log("Music API Response Body:", responseText);
+            const startData = await startResponse.json();
 
-            let data;
-            try {
-                data = JSON.parse(responseText);
-            } catch (e) {
-                console.error("Failed to parse JSON:", e);
-                throw new Error(`API returned invalid JSON (${response.status}): ${responseText.slice(0, 100)}`);
+            if (!startResponse.ok || !startData.success) {
+                throw new Error(startData.error || "Failed to start generation");
             }
 
-            if (!response.ok) {
-                // Refund on failure would be ideal here if we had a server action
-                // For now, we assume user contacts support or we rely on successful deduction
-                // Actually, deductCredit optimistically updates, but if API fails we might want to refund?
-                // The hook currently reverts if the hook deduction fails, but here we consumed it.
-                // We'll leave as is for MVP.
-                throw new Error(data.error || "Failed to generate music")
-            }
+            const taskId = startData.taskId;
+            console.log("Task started:", taskId);
 
-            let url = ""
-            if (typeof data.data === 'string') {
-                url = data.data
-            } else if (data.data?.tasks?.[0]?.download_link) {
-                url = data.data.tasks[0].download_link
-            } else {
-                if (data.url) url = data.url
-            }
+            // 2. Poll for Completion
+            // Suno takes roughly 60-120 seconds. We'll poll every 5 seconds.
+            const pollInterval = 5000;
+            const maxAttempts = 60; // 5 minutes timeout
 
-            if (url) {
-                setAudioUrl(url)
-                addItem({
-                    type: 'music',
-                    title: `${mood} - ${prompt.slice(0, 20)}...`,
-                    url: url
-                })
-            } else {
-                // Fallback Mock for Demo/Dev if API fails or no key
-                if (data.error && data.error.includes("Mubert API key not configured")) {
-                    // Simulate success for demo
-                    const mockUrl = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112778.mp3"
-                    setAudioUrl(mockUrl)
-                    addItem({
-                        type: 'music',
-                        title: `(Demo) ${mood} Track`,
-                        url: mockUrl
-                    })
-                } else {
-                    throw new Error("No audio URL found in response")
+            let attempts = 0;
+            let finalUrl = null;
+
+            while (attempts < maxAttempts) {
+                attempts++;
+
+                // Wait before checking
+                await new Promise(resolve => setTimeout(resolve, pollInterval));
+
+                const checkResponse = await fetch(`/api/generate/music?taskId=${taskId}`);
+                const checkData = await checkResponse.json();
+
+                console.log("Polling status:", checkData.status);
+
+                if (checkData.status === "completed" && checkData.audioUrl) {
+                    finalUrl = checkData.audioUrl;
+                    break;
+                } else if (checkData.status === "failed") {
+                    throw new Error("Music generation failed on provider side.");
                 }
+
+                // If 'processing' or 'pending', continue polling
             }
+
+            if (!finalUrl) {
+                throw new Error("Generation timed out. Please try again later.");
+            }
+
+            setAudioUrl(finalUrl);
+            addItem({
+                type: 'music',
+                title: `${mood} - ${prompt.slice(0, 20)}...`,
+                url: finalUrl
+            });
 
         } catch (err: any) {
             console.error(err)
             setError(err.message || "Something went wrong")
+            // Optional: Refund credit here if failed? 
         } finally {
             setIsGenerating(false)
         }

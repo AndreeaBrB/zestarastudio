@@ -1,85 +1,133 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
 
+const GOAPI_BASE_URL = "https://api.goapi.ai/api/v1/suno";
+
+// POST: Start Music Generation Task
 export async function POST(req: Request) {
   try {
-    const requestPayload = await req.json()
-    console.log("Music API Hit. Body:", requestPayload);
-    const { prompt, duration, mode } = requestPayload;
-    const pat = process.env.MUBERT_PAT
-    console.log("Mubert PAT configured:", !!pat);
+    const requestPayload = await req.json();
+    console.log("Music API [Start] Hit. Body:", requestPayload);
 
-    if (!pat) {
-      console.warn("Missing MUBERT_PAT environment variable.")
-      // Return a mock response if no key is present, to allow UI testing
-      // or error out if strict. Let's error out to prompt the user to add it,
-      // but maybe include a "demo" mode fallback if we wanted.
-      // For now, let's return a specific error so the UI can show a helpful message.
+    const { prompt } = requestPayload;
+    // Note: customMode=true allows custom lyrics, but for simple prompts we use standard generation.
+    // GoAPI usually requires "prompt" for description-based generation.
+    // If user wants custom lyrics, we'd use "lyrics" field and "custom_mode": true.
+    // For now, mapping general prompt to simple generation.
+
+    const apiKey = process.env.GOAPI_KEY;
+
+    if (!apiKey) {
+      console.warn("Missing GOAPI_KEY environment variable.");
       return NextResponse.json(
-        { error: "Mubert API key not configured. Please add MUBERT_PAT to env." },
+        { error: "GoAPI (Suno) key not configured." },
         { status: 500 }
-      )
+      );
     }
 
-    console.log("Generating music with Mubert...", { prompt, duration, mode })
-
-    // Mubert API: TTMRecord (Text-to-Music)
-    // Docs target: https://api-b2b.mubert.com/v2/TTMRecord
-    const body = {
-      method: "TTMRecord",
-      params: {
-        text: prompt,
-        duration: parseInt(duration),
-        pat: pat,
-        mode: mode || "track", // 'track', 'loop', 'jingle', 'mix'
-      },
-    }
-
-    const response = await fetch("https://api-b2b.mubert.com/v2/TTMRecord", {
+    const response = await fetch(`${GOAPI_BASE_URL}/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-Key": apiKey,
       },
-      body: JSON.stringify(body),
-    })
+      body: JSON.stringify({
+        prompt: prompt,
+        mv: "chirp-v3-0", // Using v3 for better quality
+      }),
+    });
 
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error("Mubert API Error:", errorText)
+      const errorText = await response.text();
+      console.error("GoAPI Create Error:", errorText);
       return NextResponse.json(
-        { error: `Mubert API error: ${response.statusText}` },
+        { error: `Provider error: ${response.statusText}`, details: errorText },
         { status: response.status }
-      )
+      );
     }
 
-    const data = await response.json()
-    console.log("Mubert response:", data)
+    const data = await response.json();
+    // GoAPI response structure: { data: { task_id: "..." }, code: 200, ... }
+    const taskId = data.data?.task_id;
 
-    // The data.data should contain the download link usually, or a task ID.
-    // For TTMRecord, it usually returns the track immediately or a link.
-    // Structure typically: { data: { tasks: [ { task_id, ... } ] } } or direct url inside.
-    // Wait, Mubert often is async or returns a direct link depending on the method.
-    // Let's assume standard response structure verification is needed.
-    // Based on common knowledge, 'TTMRecord' returns a URL in data.
-
-    // Check for inner data
-    if (data.data) {
-      // data.data could be the URL string or an object containing it
-      // Depending on specific API version (v2).
-      // Let's pass the whole data object back for the frontend to parse,
-      // or refine if we see the structure.
-      return NextResponse.json(data)
-    } else {
-      return NextResponse.json(
-        { error: "Invalid response from Mubert", details: data },
-        { status: 500 }
-      )
+    if (!taskId) {
+      throw new Error("No task_id returned from provider");
     }
+
+    return NextResponse.json({
+      success: true,
+      taskId: taskId,
+      message: "Music generation started",
+      provider: "GoAPI/Suno"
+    });
 
   } catch (error) {
-    console.error("Internal Server Error:", error)
+    console.error("Music Generation Start Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to start music generation", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
-    )
+    );
+  }
+}
+
+// GET: Check Task Status
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const taskId = searchParams.get("taskId");
+
+    if (!taskId) {
+      return NextResponse.json({ error: "Missing taskId" }, { status: 400 });
+    }
+
+    const apiKey = process.env.GOAPI_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Configuration Error" }, { status: 500 });
+    }
+
+    const response = await fetch(`${GOAPI_BASE_URL}/get?task_id=${taskId}`, {
+      headers: {
+        "X-API-Key": apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Provider check failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    // GoAPI Get response: { data: { status: "completed", clips: { "id": ... "audio_url": ... } } }
+
+    // Status can be: 'processing', 'completed', 'failed'
+    const status = data.data?.status;
+
+    // GoAPI returns "clips" object/map. We usually get 2 clips per generation.
+    // Let's pick the first one if completed.
+    let audioUrl = null;
+    let clipId = null;
+
+    if (status === "completed" && data.data?.clips) {
+      // clips is an object where keys are clip_ids.
+      const clipKeys = Object.keys(data.data.clips);
+      if (clipKeys.length > 0) {
+        const firstClip = data.data.clips[clipKeys[0]];
+        audioUrl = firstClip.audio_url;
+        clipId = firstClip.id;
+      }
+    }
+
+    return NextResponse.json({
+      taskId,
+      status: status, // 'processing' | 'completed' | 'failed'
+      audioUrl: audioUrl,
+      clipId: clipId,
+      fullData: data.data // Debugging
+    });
+
+  } catch (error) {
+    console.error("Music Status Check Error:", error);
+    return NextResponse.json(
+      { error: "Failed to check status", details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
 }

@@ -12,6 +12,7 @@ export interface CartItem {
     credits: number
     image?: string
     planId?: string // For subscriptions
+    planName?: string // Optional, for display name consistency
 }
 
 interface CartContextType {
