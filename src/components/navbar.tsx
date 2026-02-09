@@ -14,7 +14,7 @@ const navItems = [
     { name: "AI News", href: "/news", icon: Zap },
     { name: "Prompt Genie", href: "/prompts", icon: Sparkles },
     { name: "Merchandise", href: "/merch", icon: ShoppingCart },
-    { name: "About Us", href: "/#legend", icon: Sparkles },
+    { name: "About Me", href: "/#legend", icon: Sparkles },
 ]
 
 export function Navbar() {

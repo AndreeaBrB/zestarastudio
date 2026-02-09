@@ -141,11 +141,7 @@ export default function Home() {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* Magic Skill Quests Preview */}
-=======
-      {/* Tutorials Preview */}
->>>>>>> f86682f (Refine Zastara branding, mascot, and 1st-person tone)
       <section className="py-12 bg-black/40">
         <div className="container px-4 mx-auto max-w-7xl">
           <div className="flex items-center justify-between mb-12">
@@ -410,7 +406,6 @@ export default function Home() {
       <section id="legend" className="py-16 bg-gradient-to-b from-transparent to-primary/5 scroll-mt-20">
         <div className="container px-4 mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-<<<<<<< HEAD
             <div className="relative group flex flex-col items-center">
               <motion.div
                 animate={{
@@ -466,47 +461,6 @@ export default function Home() {
                       <div className="text-xs uppercase tracking-[0.2em] font-bold opacity-60">Spark</div>
                     </div>
                   </div>
-=======
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-violet-600 rounded-[3rem] blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10">
-                <img
-                  src="/Users/andreeabarbuceanu/.gemini/antigravity/brain/a56899bd-2bfb-452f-9d91-3b0cc5acda29/robot_in_zastara_hoodie_1770607397799.png"
-                  alt="Zastara Robot Mascot"
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </div>
-
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-4">
-                THE STORY
-              </div>
-              <h2 className="text-4xl font-bold mb-6 italic">What is a "Zastara" anyway?</h2>
-              <div className="bg-white/5 border border-white/10 p-8 rounded-[2.5rem] text-left relative overflow-hidden">
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 blur-[80px] rounded-full" />
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  Zastara wasn't found in an ancient library or a dictionary. It was born in a late-night coding session when I, powered by pure caffeine and a slightly glitchy keyboard, tried to type <span className="text-primary font-bold">"Zesty Star AI"</span>.
-                </p>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  A rogue coffee spill hit the <span className="font-bold">"A"</span> key, and the AI sensing my exhaustion decided that <span className="text-primary font-black uppercase tracking-tighter text-2xl">ZASTARA</span> sounded like a place where robots wear high-quality hoodies and everyone finally understands prompt engineering. I didn't argue.
-                </p>
-                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-12">
-                  <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <span className="text-primary font-bold italic">The Magic Spark</span>
-                  </h4>
-                  <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-primary mb-1 tracking-widest uppercase">Zast</div>
-                      <div className="text-xs uppercase tracking-[0.2em] font-bold opacity-60">Magic</div>
-                    </div>
-                    <div className="text-3xl font-light opacity-30">+</div>
-                    <div className="text-center">
-                      <div className="text-4xl font-black text-primary mb-1 tracking-widest uppercase">Ara</div>
-                      <div className="text-xs uppercase tracking-[0.2em] font-bold opacity-60">Spark</div>
-                    </div>
-                  </div>
->>>>>>> f86682f (Refine Zastara branding, mascot, and 1st-person tone)
                   <p className="mt-6 text-center text-muted-foreground italic max-w-xl mx-auto">
                     "Zastara represents that elusive <span className="text-primary font-bold">Magic Spark</span> of innovation. To many, AI feels like pure wizardry, and I'm here to provide the spark that turns curiosity into mastery."
                   </p>
