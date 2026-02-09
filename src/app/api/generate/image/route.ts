@@ -15,22 +15,32 @@ export async function POST(req: Request) {
             return new NextResponse("Image is required", { status: 400 });
         }
 
-        const supabase = createServerClient();
-        const COST = 2; // 2 credits per generation
+        // Admin Bypass
+        const isAdmin = user.emailAddresses.some(e => e.emailAddress === process.env.NEXT_PUBLIC_ADMIN_EMAIL || e.emailAddress === process.env.ADMIN_EMAIL);
 
-        // 1. Check User Balance
-        const { data: profile, error: profileError } = await supabase
-            .from("profiles")
-            .select("credits")
-            .eq("id", user.id)
-            .single();
+        let profile = null;
 
-        if (profileError || !profile) {
-            return new NextResponse("User profile not found", { status: 404 });
-        }
+        if (!isAdmin) {
+            const supabase = createServerClient();
+            const COST = 2; // 2 credits per generation
 
-        if (profile.credits < COST) {
-            return new NextResponse("Insufficient credits", { status: 403 });
+            // 1. Check User Balance
+            const { data: userProfile, error: profileError } = await supabase
+                .from("profiles")
+                .select("credits")
+                .eq("id", user.id)
+                .single();
+
+            if (profileError || !userProfile) {
+                // Return 404 only if not admin (admins might not have profiles yet)
+                return new NextResponse("User profile not found", { status: 404 });
+            }
+
+            if (userProfile.credits < COST) {
+                return new NextResponse("Insufficient credits", { status: 403 });
+            }
+
+            profile = userProfile;
         }
 
         // 2. Mock AI Generation (Replace with ComfyUI / Replicate call later)
@@ -38,21 +48,25 @@ export async function POST(req: Request) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         const generatedImageUrl = "https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=1000&auto=format&fit=crop";
 
-        // 3. Deduct Credits
-        const { error: updateError } = await supabase
-            .from("profiles")
-            .update({ credits: profile.credits - COST })
-            .eq("id", user.id);
+        // 3. Deduct Credits (Only for non-admins)
+        if (!isAdmin && profile) {
+            const supabase = createServerClient();
+            const COST = 2;
+            const { error: updateError } = await supabase
+                .from("profiles")
+                .update({ credits: profile.credits - COST })
+                .eq("id", user.id);
 
-        if (updateError) {
-            console.error("Credit deduction failed:", updateError);
-            return new NextResponse("Transaction failed", { status: 500 });
+            if (updateError) {
+                console.error("Credit deduction failed:", updateError);
+                return new NextResponse("Transaction failed", { status: 500 });
+            }
         }
 
         return NextResponse.json({
             success: true,
             imageUrl: generatedImageUrl,
-            remainingCredits: profile.credits - COST
+            remainingCredits: isAdmin ? 999999 : (profile ? profile.credits - 2 : 0)
         });
 
     } catch (error) {

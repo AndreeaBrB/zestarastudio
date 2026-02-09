@@ -15,22 +15,30 @@ export async function POST(req: Request) {
             return new NextResponse("Prompt is required", { status: 400 });
         }
 
-        const supabase = createServerClient();
-        const COST = 3; // 3 credits per story
+        // Admin Bypass
+        const isAdmin = user.emailAddresses.some(e => e.emailAddress === process.env.NEXT_PUBLIC_ADMIN_EMAIL || e.emailAddress === process.env.ADMIN_EMAIL);
 
-        // 1. Check User Balance
-        const { data: profile, error: profileError } = await supabase
-            .from("profiles")
-            .select("credits")
-            .eq("id", user.id)
-            .single();
+        let profile = null;
 
-        if (profileError || !profile) {
-            return new NextResponse("User profile not found", { status: 404 });
-        }
+        if (!isAdmin) {
+            const supabase = createServerClient();
+            const COST = 3; // 3 credits per story
 
-        if (profile.credits < COST) {
-            return new NextResponse("Insufficient credits", { status: 403 });
+            // 1. Check User Balance
+            const { data: userProfile, error: profileError } = await supabase
+                .from("profiles")
+                .select("credits")
+                .eq("id", user.id)
+                .single();
+
+            if (profileError || !userProfile) {
+                return new NextResponse("User profile not found", { status: 404 });
+            }
+
+            if (userProfile.credits < COST) {
+                return new NextResponse("Insufficient credits", { status: 403 });
+            }
+            profile = userProfile;
         }
 
         // 2. Mock AI Generation (Replace with Llama 3 via Groq/Replicate later)
@@ -39,20 +47,24 @@ export async function POST(req: Request) {
         const mockStory = `Title: The ${genre} Adventure\n\nOnce upon a time, based on your prompt: "${prompt}"...\n\nEvery shadow seemed to whisper secrets of the ancient world. The protagonist stepped forward, heart pounding like a war drum in the silence of the night. This was no ordinary journey; it was a ${length} quest that would determine the fate of the entire kingdom.\n\n(This is a mock generated story. Integration with Llama 3 will replace this text with a full complete story based on your prompt!)`;
 
         // 3. Deduct Credits
-        const { error: updateError } = await supabase
-            .from("profiles")
-            .update({ credits: profile.credits - COST })
-            .eq("id", user.id);
+        if (!isAdmin && profile) {
+            const supabase = createServerClient();
+            const COST = 3;
+            const { error: updateError } = await supabase
+                .from("profiles")
+                .update({ credits: profile.credits - COST })
+                .eq("id", user.id);
 
-        if (updateError) {
-            console.error("Credit deduction failed:", updateError);
-            return new NextResponse("Transaction failed", { status: 500 });
+            if (updateError) {
+                console.error("Credit deduction failed:", updateError);
+                return new NextResponse("Transaction failed", { status: 500 });
+            }
         }
 
         return NextResponse.json({
             success: true,
             story: mockStory,
-            remainingCredits: profile.credits - COST
+            remainingCredits: isAdmin ? 999999 : (profile ? profile.credits - 3 : 0)
         });
 
     } catch (error) {

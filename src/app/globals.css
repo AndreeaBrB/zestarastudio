@@ -88,6 +88,7 @@
       radial-gradient(circle at 15% 50%, rgba(144, 27, 249, 0.15), transparent 25%),
       radial-gradient(circle at 85% 30%, rgba(255, 215, 0, 0.1), transparent 25%);
     background-attachment: fixed;
+    font-size: 80%;
   }
 
   * {

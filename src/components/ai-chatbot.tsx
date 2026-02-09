@@ -17,7 +17,7 @@ export function AIChatbot() {
         {
             id: "welcome",
             role: "assistant",
-            content: "Hi! I'm Zestara AI. I can help you with creating images, stories, animations, and voiceovers. How can I assist you today?"
+            content: "Hi there! I'm Zestie, your AI training buddy. 🎓✨ I can help you master the latest AI tools, catch up on news, or explore our creative studios! How can I help you learn today?"
         }
     ])
     const [inputValue, setInputValue] = useState("")
@@ -61,26 +61,29 @@ export function AIChatbot() {
     const generateResponse = (input: string): string => {
         const lowerInput = input.toLowerCase()
 
-        if (lowerInput.includes("image") || lowerInput.includes("photo")) {
-            return "Our Image Studio uses advanced SDXL models. You can upload a reference photo or simply describe what you want to see. Try prompts like 'A cyberpunk city' or 'Disney style character'."
+        if (lowerInput.includes("shop") || lowerInput.includes("merch") || lowerInput.includes("buy")) {
+            return "Check out our Zastara AI Merchandise section on the homepage! We've got hoodies, t-shirts, caps, and mugs. You can add items directly to your cart and checkout whenever you're ready."
         }
-        if (lowerInput.includes("story") || lowerInput.includes("write")) {
-            return "Story Lab helps you write creative stories. Just give me a character name and a genre, and I'll generate a unique tale for you."
+        if (lowerInput.includes("name") || lowerInput.includes("origin") || lowerInput.includes("meaning") || lowerInput.includes("zastara mean")) {
+            return "Ah, the legend! Zastara AI was born during a late-night coding session. Our founder tried to type 'Zesty Star AI', but a coffee spill hit the 'A' key, and Zastara was born! ☕✨ It officially stands for: Zany Artificial Souls Training Awesome Robot Apprentices. We liked it so much we kept it!"
         }
-        if (lowerInput.includes("voice") || lowerInput.includes("speech")) {
-            return "Voice Studio can turn any text into lifelike speech. We have multiple voices like Alloy, Echo, and Shimmer. Great for narrations!"
+        if (lowerInput.includes("tutorial") || lowerInput.includes("learn") || lowerInput.includes("how to")) {
+            return "You can find all our training guides in the Tutorials Hub! We cover everything from Midjourney to AI Video. Just click 'Tutorials' in the navbar to start your journey."
         }
-        if (lowerInput.includes("animation") || lowerInput.includes("video")) {
-            return "Animation Bay brings static images to life. Upload a character and choose a motion style like 'Walking' or 'Pan & Zoom'."
+        if (lowerInput.includes("news") || lowerInput.includes("update") || lowerInput.includes("latest")) {
+            return "Our AI News Hub is updated daily with the most important magic from the world of AI. Check it out at /news to see what the robots are up to today!"
+        }
+        if (lowerInput.includes("youtube") || lowerInput.includes("video")) {
+            return "We have a dedicated YouTube channel where we post deep dives into new AI tools. You can watch them directly in our Tutorials section or subscribe to us on YouTube!"
+        }
+        if (lowerInput.includes("prompt") || lowerInput.includes("genie") || lowerInput.includes("generator")) {
+            return "The Prompt Genie is our free tool to help you write perfect AI prompts. Just enter a basic idea, and Zastara will turn it into a high-quality prompt for Midjourney, ChatGPT, or DALL-E."
         }
         if (lowerInput.includes("price") || lowerInput.includes("cost") || lowerInput.includes("subscription")) {
-            return "We offer flexible pricing. You can subscribe monthly starting at $9.99 or buy credit packs as you go. Check out our Pricing page for more details."
-        }
-        if (lowerInput.includes("free") || lowerInput.includes("trial")) {
-            return "Yes! You can explore all our tools and see examples for free. To generate your own content, you'll need credits, but we offer a trial for new users."
+            return "Learning is free at Zastara! Our Tutorials and News are open to everyone. For merchandise, you can see specific pricing for each item in our Shop section."
         }
 
-        return "I'm here to help you create amazing content with AI. You can ask me about our Image, Story, Voice, or Animation tools, or how to get started!"
+        return "I'm Zestie, your AI training buddy! I can tell you about our Tutorials, Daily AI News, or our new Merchandise collection. What would you like to explore?"
     }
 
     return (
@@ -120,7 +123,7 @@ export function AIChatbot() {
                                     <Bot className="w-5 h-5 text-primary-foreground" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold">Zestara Assistant</h3>
+                                    <h3 className="font-semibold">Zastara</h3>
                                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                                         <span className="w-2 h-2 bg-green-500 rounded-full inline-block" />
                                         Online
@@ -189,7 +192,7 @@ export function AIChatbot() {
                                     type="text"
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
-                                    placeholder="Ask about Zestara tools..."
+                                    placeholder="Ask about Zastara tools..."
                                     className="w-full pr-12 pl-4 py-3 bg-background border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
                                 />
                                 <button

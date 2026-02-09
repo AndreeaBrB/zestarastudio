@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { CartProvider } from "@/lib/cart-context";
 import { CartDrawer } from "@/components/cart-drawer";
 import { AIChatbot } from "@/components/ai-chatbot";
@@ -19,9 +20,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zestara - AI Creative Studio",
-  description: "Create stunning characters, stories, music, and animations with AI. Transform photos into Pixar-style art.",
-  keywords: ["AI", "character generator", "story creator", "Pixar style", "animation", "creative studio"],
+  title: "Zastara - AI Education & Merch",
+  description: "Learn AI mastery and shop exclusive AI-inspired merchandise.",
+  keywords: ["AI", "AI Education", "Merchandise", "Zastara AI", "Learn AI"],
 };
 
 export default function RootLayout({
@@ -72,6 +73,7 @@ export default function RootLayout({
             <main className="flex-1 pt-20">
               {children}
             </main>
+            <Footer />
             <CartDrawer />
             <AIChatbot />
           </CartProvider>

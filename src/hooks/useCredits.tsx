@@ -21,7 +21,7 @@ export function useCredits() {
         if (!isAuthLoaded) return
 
         if (isSignedIn && user) {
-            fetchUserCredits()
+            if (!isAdmin) fetchUserCredits()
         } else {
             setLoading(false)
         }
@@ -49,7 +49,11 @@ export function useCredits() {
         }
     }
 
+    const isAdmin = user?.emailAddresses.some(e => e.emailAddress === process.env.NEXT_PUBLIC_ADMIN_EMAIL)
+
     const getCredits = (category: string) => {
+        if (isAdmin) return Infinity // Unlimited for admin
+
         if (isSignedIn) {
             // Logged in users use the global pool
             return userCredits
@@ -60,6 +64,8 @@ export function useCredits() {
     }
 
     const deductCredit = async (category: string, amount: number = 1): Promise<boolean> => {
+        if (isAdmin) return true // Free for admin
+
         if (isSignedIn) {
             if (userCredits < amount) return false
 

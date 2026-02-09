@@ -86,7 +86,7 @@ export default function Home() {
               className="inline-flex h-14 items-center justify-center rounded-2xl bg-white/10 border border-white/10 px-8 text-lg font-bold backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-105"
             >
               <Sparkles className="mr-2 h-5 w-5 text-yellow-400" />
-              Shop Merch
+              Shop Merchandise
             </Link>
           </div>
         </motion.div>
@@ -406,15 +406,31 @@ export default function Home() {
       <section id="legend" className="py-16 bg-gradient-to-b from-transparent to-primary/5 scroll-mt-20">
         <div className="container px-4 mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-violet-600 rounded-[3rem] blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative aspect-square rounded-[3rem] overflow-hidden border border-white/10">
-                <img
-                  src="/Users/andreeabarbuceanu/.gemini/antigravity/brain/a56899bd-2bfb-452f-9d91-3b0cc5acda29/robot_in_zastara_hoodie_1770607397799.png"
-                  alt="Zastara Robot Mascot"
-                  className="object-cover w-full h-full"
-                />
-              </div>
+            <div className="relative group flex flex-col items-center">
+              <motion.div
+                animate={{
+                  y: [0, -15, 0],
+                  rotate: [0, 2, -2, 0]
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="relative"
+              >
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary to-violet-600 rounded-[3rem] blur-2xl opacity-40"></div>
+                <div className="relative aspect-square w-full max-w-[500px] rounded-[3rem] overflow-hidden border-2 border-white/20 shadow-2xl">
+                  <img
+                    src="/robot-mascot.png"
+                    alt="Zastara Robot Mascot"
+                    className="object-cover w-full h-full"
+                  />
+                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
+                    <p className="text-xs font-bold text-primary">"I do all the coding. They just spill coffee."</p>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
             <div className="text-center lg:text-left">
@@ -430,7 +446,7 @@ export default function Home() {
                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   A rogue coffee spill hit the <span className="font-bold">"A"</span> key, and the AI sensing my exhaustion decided that <span className="text-primary font-black uppercase tracking-tighter text-2xl">ZASTARA</span> sounded like a place where robots wear high-quality hoodies and everyone finally understands prompt engineering. I didn't argue.
                 </p>
-                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-12">
+                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
                   <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <span className="text-primary font-bold italic">The Magic Spark</span>
                   </h4>
