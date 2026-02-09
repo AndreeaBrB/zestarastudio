@@ -21,17 +21,18 @@ export function Footer() {
 
                     {/* Product */}
                     <div>
-                        <h3 className="font-semibold mb-4 text-primary">Product</h3>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="/tutorials" className="hover:text-primary transition-colors">Tutorials</Link></li>
-                            <li><Link href="/prompts" className="hover:text-primary transition-colors">Prompt Genie</Link></li>
-                            <li><Link href="/news" className="hover:text-primary transition-colors">AI News</Link></li>
+                        <h4 className="font-semibold mb-4">Quick Links</h4>
+                        <ul className="space-y-2">
+                            <li><Link href="/tutorials" className="text-muted-foreground hover:text-primary transition-colors">Tutorials</Link></li>
+                            <li><Link href="/news" className="text-muted-foreground hover:text-primary transition-colors">AI News</Link></li>
+                            <li><Link href="/merch" className="text-muted-foreground hover:text-primary transition-colors">Merchandise</Link></li>
+                            <li><Link href="/#legend" className="text-muted-foreground hover:text-primary transition-colors">About Me</Link></li>
                         </ul>
                     </div>
 
                     {/* Resources */}
                     <div>
-                        <h3 className="font-semibold mb-4 text-primary">Resources</h3>
+                        <h4 className="font-semibold mb-4">Connect with Me</h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Support</Link></li>
                             <li><Link href="mailto:support@zastarastudio.com" className="hover:text-primary transition-colors">support@zastarastudio.com</Link></li>
@@ -54,7 +55,7 @@ export function Footer() {
                             © {new Date().getFullYear()} Zastara AI. All rights reserved.
                         </p>
                         <p className="text-[10px] text-muted-foreground/50 max-w-md italic">
-                            * Magical Disclaimer: Zastara AI is not responsible for any accidental dragon summonings, spontaneous levitation, or sudden urges to speak in binary. Our merchandise may contain trace amounts of pixie dust. Use at your own risk of becoming too awesome.
+                            * Magical Disclaimer: Zastara AI is not responsible for any accidental dragon summonings, spontaneous levitation, or sudden urges to speak in binary. My merchandise may contain trace amounts of pixie dust. Use at your own risk of becoming too awesome.
                         </p>
                     </div>
                     <div className="flex items-center justify-end gap-4 text-muted-foreground">

@@ -17,7 +17,7 @@ export function AIChatbot() {
         {
             id: "welcome",
             role: "assistant",
-            content: "Hi there! I'm Zestie, your AI training buddy. 🎓✨ I can help you master the latest AI tools, catch up on news, or explore our creative studios! How can I help you learn today?"
+            content: "Hi there! I'm Zestie, your AI training buddy. 🎓✨ I can help you master the latest AI tools, catch up on news, or explore my merchandise! How can I help you learn today?"
         }
     ])
     const [inputValue, setInputValue] = useState("")
@@ -62,19 +62,19 @@ export function AIChatbot() {
         const lowerInput = input.toLowerCase()
 
         if (lowerInput.includes("shop") || lowerInput.includes("merch") || lowerInput.includes("buy")) {
-            return "Check out our Zastara AI Merchandise section on the homepage! We've got hoodies, t-shirts, caps, and mugs. You can add items directly to your cart and checkout whenever you're ready."
+            return "Check out my Zastara AI Merchandise section on the homepage! I've got hoodies, t-shirts, caps, and mugs. You can add items directly to your cart and checkout whenever you're ready."
         }
         if (lowerInput.includes("name") || lowerInput.includes("origin") || lowerInput.includes("meaning") || lowerInput.includes("zastara mean")) {
-            return "Ah, the legend! Zastara AI was born during a late-night coding session. Our founder tried to type 'Zesty Star AI', but a coffee spill hit the 'A' key, and Zastara was born! ☕✨ It officially stands for: Zany Artificial Souls Training Awesome Robot Apprentices. We liked it so much we kept it!"
+            return "Ah, the legend! Zastara AI was born during a late-night coding session when my founder tried to type 'Zesty Star AI', but a coffee spill hit the 'A' key. ZAST stands for Magic and ARA stands for Spark! Together, Zastara is the 'Magic Spark' of innovation that makes AI feel like wizardry. It also stands for: Zany Artificial Souls Training Awesome Robot Apprentices!"
         }
         if (lowerInput.includes("tutorial") || lowerInput.includes("learn") || lowerInput.includes("how to")) {
-            return "You can find all our training guides in the Tutorials Hub! We cover everything from Midjourney to AI Video. Just click 'Tutorials' in the navbar to start your journey."
+            return "You can find all my training guides in the Tutorials Hub! I cover everything from Midjourney to AI Video. Just click 'Tutorials' in the navbar to start your journey."
         }
         if (lowerInput.includes("news") || lowerInput.includes("update") || lowerInput.includes("latest")) {
-            return "Our AI News Hub is updated daily with the most important magic from the world of AI. Check it out at /news to see what the robots are up to today!"
+            return "My AI News Hub is updated daily with the most important magic from the world of AI. Check it out at /news to see what the robots are up to today!"
         }
         if (lowerInput.includes("youtube") || lowerInput.includes("video")) {
-            return "We have a dedicated YouTube channel where we post deep dives into new AI tools. You can watch them directly in our Tutorials section or subscribe to us on YouTube!"
+            return "I have a dedicated YouTube channel where I post deep dives into new AI tools. You can watch them directly in my Tutorials section or subscribe to me on YouTube!"
         }
         if (lowerInput.includes("prompt") || lowerInput.includes("genie") || lowerInput.includes("generator")) {
             return "The Prompt Genie is our free tool to help you write perfect AI prompts. Just enter a basic idea, and Zastara will turn it into a high-quality prompt for Midjourney, ChatGPT, or DALL-E."
@@ -83,7 +83,7 @@ export function AIChatbot() {
             return "Learning is free at Zastara! Our Tutorials and News are open to everyone. For merchandise, you can see specific pricing for each item in our Shop section."
         }
 
-        return "I'm Zestie, your AI training buddy! I can tell you about our Tutorials, Daily AI News, or our new Merchandise collection. What would you like to explore?"
+        return "I'm Zestie, your AI training buddy! I can tell you about my Tutorials, Daily AI News, or my new Merchandise collection. What would you like to explore?"
     }
 
     return (

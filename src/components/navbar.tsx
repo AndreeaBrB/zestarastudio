@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs"
 import { Youtube, Instagram, Twitter, Music as TikTok, Facebook } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Sparkles, Image as ImageIcon, BookOpen, Music, Film, Mic, Zap, Globe, CircleDollarSign, ChevronDown } from "lucide-react"
+import { Sparkles, Image as ImageIcon, BookOpen, Music, Film, Mic, Zap, Globe, CircleDollarSign, ChevronDown, ShoppingCart } from "lucide-react"
 import { CartIcon } from "@/components/cart-icon"
 import { useCart } from "@/lib/cart-context"
 
@@ -13,7 +13,8 @@ const navItems = [
     { name: "Tutorials", href: "/tutorials", icon: Film },
     { name: "AI News", href: "/news", icon: Zap },
     { name: "Prompt Genie", href: "/prompts", icon: Sparkles },
-    { name: "Shop", href: "/merch", icon: ImageIcon },
+    { name: "Merchandise", href: "/merch", icon: ShoppingCart },
+    { name: "About Us", href: "/#legend", icon: Sparkles },
 ]
 
 export function Navbar() {
