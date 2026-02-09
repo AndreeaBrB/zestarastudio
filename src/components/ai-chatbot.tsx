@@ -94,15 +94,15 @@ export function AIChatbot() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(true)}
                 className={cn(
-                    "fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg transition-colors border border-border",
-                    isOpen ? "hidden" : "bg-primary text-primary-foreground hover:bg-primary/90"
+                    "fixed bottom-6 right-6 z-50 p-0 rounded-full shadow-lg transition-colors border-2 border-primary/20 bg-background overflow-hidden w-16 h-16",
+                    isOpen ? "hidden" : "block"
                 )}
             >
-                <div className="relative">
-                    <Bot className="w-6 h-6" />
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                <div className="relative w-full h-full">
+                    <img src="/robot-cool.png" alt="Zastara Bot" className="object-cover w-full h-full scale-110" />
+                    <span className="absolute bottom-1 right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                     </span>
                 </div>
             </motion.button>
@@ -114,25 +114,25 @@ export function AIChatbot() {
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="fixed bottom-6 right-6 z-50 w-[380px] h-[600px] max-h-[80vh] bg-card border border-border rounded-xl shadow-2xl flex flex-col overflow-hidden"
+                        className="fixed bottom-6 right-6 z-50 w-[380px] h-[600px] max-h-[80vh] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="p-4 border-b border-border bg-primary/10 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="p-2 bg-primary rounded-lg">
-                                    <Bot className="w-5 h-5 text-primary-foreground" />
+                        <div className="p-4 border-b border-border bg-gradient-to-r from-primary/10 to-violet-500/10 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-primary overflow-hidden border border-white/20">
+                                    <img src="/robot-mascot.png" alt="Zastara" className="object-cover w-full h-full" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold">Zastara</h3>
-                                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                        <span className="w-2 h-2 bg-green-500 rounded-full inline-block" />
-                                        Online
+                                    <h3 className="font-bold text-sm">Zastara Bot</h3>
+                                    <p className="text-[10px] text-muted-foreground flex items-center gap-1 font-bold">
+                                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full inline-block animate-pulse" />
+                                        FULLY CHARGED
                                     </p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 hover:bg-background/20 rounded-full transition-colors"
+                                className="p-2 hover:bg-white/10 rounded-full transition-colors"
                             >
                                 <X className="w-5 h-5" />
                             </button>
@@ -149,16 +149,20 @@ export function AIChatbot() {
                                     )}
                                 >
                                     <div className={cn(
-                                        "w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs",
-                                        message.role === "user" ? "bg-secondary text-secondary-foreground" : "bg-primary text-primary-foreground"
+                                        "w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-white/10",
+                                        message.role === "user" ? "bg-secondary" : "bg-primary"
                                     )}>
-                                        {message.role === "user" ? "You" : <Bot className="w-4 h-4" />}
+                                        {message.role === "user" ? (
+                                            <div className="w-full h-full flex items-center justify-center text-[10px] font-black">U</div>
+                                        ) : (
+                                            <img src="/robot-cool.png" alt="Bot" className="object-cover w-full h-full" />
+                                        )}
                                     </div>
                                     <div className={cn(
-                                        "p-3 rounded-2xl text-sm",
+                                        "p-3 rounded-2xl text-sm leading-relaxed",
                                         message.role === "user"
-                                            ? "bg-secondary text-secondary-foreground rounded-br-none"
-                                            : "bg-card border border-border rounded-bl-none"
+                                            ? "bg-primary text-primary-foreground rounded-br-none"
+                                            : "bg-white/5 border border-white/10 rounded-bl-none shadow-sm"
                                     )}>
                                         {message.content}
                                     </div>
@@ -166,13 +170,13 @@ export function AIChatbot() {
                             ))}
                             {isTyping && (
                                 <div className="flex gap-3 max-w-[85%]">
-                                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                        <Bot className="w-4 h-4 text-primary-foreground" />
+                                    <div className="w-8 h-8 rounded-lg overflow-hidden bg-primary border border-white/10">
+                                        <img src="/robot-studying.png" alt="Thinking" className="object-cover w-full h-full" />
                                     </div>
-                                    <div className="bg-card border border-border p-4 rounded-xl rounded-bl-none flex gap-1">
-                                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce"></span>
+                                    <div className="bg-white/5 border border-white/10 p-4 rounded-xl rounded-bl-none flex gap-1 items-center">
+                                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></span>
                                     </div>
                                 </div>
                             )}
@@ -192,13 +196,13 @@ export function AIChatbot() {
                                     type="text"
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
-                                    placeholder="Ask about Zastara tools..."
-                                    className="w-full pr-12 pl-4 py-3 bg-background border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                                    placeholder="Need some magic?"
+                                    className="w-full pr-12 pl-4 py-3 bg-white/5 border border-white/10 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm transition-all"
                                 />
                                 <button
                                     type="submit"
                                     disabled={!inputValue.trim() || isTyping}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>

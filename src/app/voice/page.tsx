@@ -4,10 +4,8 @@ import { useState } from "react"
 import { Mic, Play, Download, Loader2, Volume2, Pause } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@clerk/nextjs"
-import { useCredits } from "@/hooks/useCredits"
-import { useGallery } from "@/hooks/useGallery"
-import { GuestCreditBanner } from "@/components/guest-credit-banner"
 import { useRouter } from "next/navigation"
+import { useGallery } from "@/hooks/useGallery"
 
 const VOICES = [
     { id: "alloy", name: "Alloy", gender: "Neutral", desc: "Versatile and balanced" },
@@ -27,9 +25,7 @@ export default function VoiceStudioPage() {
     const { isSignedIn } = useAuth()
     const router = useRouter()
 
-    const { getCredits, deductCredit, loading, isGuest, totalLimit } = useCredits()
     const { addItem } = useGallery()
-    const credits = getCredits("voice")
 
     const handleExample = () => {
         setText("Welcome to Zestara Voice Studio. I can read any text you type with lifelike clarity and emotion. Try changing my voice to see what fits your story best!")
@@ -46,27 +42,9 @@ export default function VoiceStudioPage() {
         console.log(`Previewing voice: ${voiceId}`)
     }
 
+
     const handleGenerate = async () => {
-        if (!isSignedIn && credits <= 0) {
-            const msg = isGuest
-                ? "You've used all your free guest spells! Join the guild to create more."
-                : "Not enough mana (credits)!"
-
-            if (isGuest) {
-                if (confirm(msg)) router.push("/sign-up")
-            } else {
-                alert(msg)
-            }
-            return
-        }
         if (!text) return
-
-        // Deduct
-        const success = await deductCredit("voice", 2)
-        if (!success) {
-            alert("Failed to process credits")
-            return
-        }
 
         setIsGenerating(true)
         setAudioUrl(null)
@@ -129,7 +107,6 @@ export default function VoiceStudioPage() {
                             Voice Studio
                         </h1>
                         <p className="text-muted-foreground text-lg mb-6">Turn text into lifelike speech.</p>
-                        <GuestCreditBanner category="voice" className="mx-0 w-full md:w-fit" />
                     </div>
 
                     <div className="space-y-6">
@@ -194,7 +171,7 @@ export default function VoiceStudioPage() {
                             ) : (
                                 <>
                                     <Mic className="w-5 h-5" />
-                                    Generate Audio (2 Credits)
+                                    Generate Audio (Free)
                                 </>
                             )}
                         </button>

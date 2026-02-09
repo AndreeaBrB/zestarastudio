@@ -5,9 +5,8 @@ import { Music, Play, Pause, Download, Wand2, Loader2, AlertCircle } from "lucid
 import { cn } from "@/lib/utils"
 import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useCredits } from "@/hooks/useCredits"
-import { useGallery } from "@/hooks/useGallery"
 import { MagicPromptButton } from "@/components/magic-prompt-button"
+import { useGallery } from "@/hooks/useGallery"
 
 const MOODS = [
     "Epic & Heroic", "Lo-Fi Chill", "Dark Synthwave", "Orchestral Fantasy", "Upbeat Pop", "Ethereal Ambient", "Cyberpunk", "Meditation"
@@ -33,9 +32,7 @@ export function MusicGenerator() {
     const { isSignedIn } = useAuth()
     const router = useRouter()
 
-    const { getCredits, deductCredit, loading, isGuest, totalLimit } = useCredits()
     const { addItem } = useGallery()
-    const credits = getCredits("music")
 
     useEffect(() => {
         if (audioRef.current) {
@@ -48,26 +45,6 @@ export function MusicGenerator() {
         // Validation
         if (!prompt && !mood) return
 
-        // Credit Check
-        if (credits <= 0) {
-            const msg = isGuest
-                ? "You've used all your free guest music spells! Join the guild to create more."
-                : "Not enough mana (credits)!"
-
-            if (isGuest) {
-                if (window.confirm(msg)) router.push("/sign-up")
-            } else {
-                alert(msg)
-            }
-            return
-        }
-
-        // Deduct
-        const success = await deductCredit("music", 1)
-        if (!success) {
-            setError("Failed to process credits. Please try again.")
-            return
-        }
 
         setIsGenerating(true)
         setError(null)
@@ -241,7 +218,7 @@ export function MusicGenerator() {
                     ) : (
                         <>
                             <Wand2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                            Generate Track (2 Credits)
+                            Generate Track (Free)
                         </>
                     )}
                 </button>

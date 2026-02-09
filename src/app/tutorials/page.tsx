@@ -67,11 +67,25 @@ export default function TutorialsPage() {
 
     return (
         <div className="container mx-auto px-4 py-20 min-h-screen">
-            <header className="mb-16">
-                <h1 className="text-5xl font-black mb-4 tracking-tight">AI Training Hub</h1>
-                <p className="text-xl text-muted-foreground max-w-2xl">
-                    Master the tools of tomorrow. Practical, no-fluff tutorials to help you build the future.
-                </p>
+            <header className="mb-16 flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+                <div className="shrink-0 relative">
+                    <motion.div
+                        animate={{ rotate: [0, 5, -5, 0] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                        className="w-32 h-32 md:w-40 md:h-40 relative"
+                    >
+                        <img src="/robot-studying.png" alt="Studying Robot" className="rounded-[2.5rem] shadow-2xl border border-white/10" />
+                        <div className="absolute -top-4 -left-4 bg-primary text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
+                            ACADEMY
+                        </div>
+                    </motion.div>
+                </div>
+                <div>
+                    <h1 className="text-5xl font-black mb-4 tracking-tight">AI Training Hub</h1>
+                    <p className="text-xl text-muted-foreground max-w-2xl">
+                        Master the tools of tomorrow. Practical, no-fluff tutorials to help you build the future.
+                    </p>
+                </div>
             </header>
 
             {/* Filters and Search */}
@@ -82,8 +96,8 @@ export default function TutorialsPage() {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${selectedCategory === cat
-                                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                                    : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:border-white/20"
+                                ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                                : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:border-white/20"
                                 }`}
                         >
                             {cat}

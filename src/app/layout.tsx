@@ -58,14 +58,14 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col relative overflow-x-hidden`}
+          suppressHydrationWarning
         >
           {/* Animated Stars Background */}
-          {/* Animated Stars Background */}
-          <div className="fixed inset-0 z-[-1] pointer-events-none">
-            <div className="absolute top-0 left-0 w-full h-[200vh] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 bg-repeat"></div>
+          <div className="fixed inset-0 z-[-1] pointer-events-none opacity-20">
+            <div className="absolute inset-0 bg-[#0a0a0f]"></div>
           </div>
 
           <CartProvider>

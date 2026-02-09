@@ -5,10 +5,8 @@ import { BookOpen, PenTool, Sparkles, Loader2, Copy, Download } from "lucide-rea
 import { cn } from "@/lib/utils"
 import { useAuth, useClerk } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useCredits } from "@/hooks/useCredits"
 import { useGallery } from "@/hooks/useGallery"
 import { MagicPromptButton } from "@/components/magic-prompt-button"
-import { GuestCreditBanner } from "@/components/guest-credit-banner"
 
 const GENRES = [
     "Fantasy", "Science Fiction", "Mystery", "Romance", "Horror", "Adventure", "Fairy Tale", "Comedy"
@@ -30,10 +28,7 @@ export default function StoryGeneratorPage() {
     const { openSignUp } = useClerk()
     const router = useRouter()
 
-    // Unified Credits Hook
-    const { getCredits, deductCredit, loading, isGuest, totalLimit } = useCredits()
     const { addItem } = useGallery()
-    const credits = getCredits("story")
 
     const handleExample = () => {
         setPrompt("A brave little toaster who wants to see the world beyond the kitchen.")
@@ -51,27 +46,6 @@ Out in the garden, Crumbly saw flowers brighter than any jam and grass greener t
     const handleGenerate = async () => {
         if (!prompt) return
 
-        // Check Credits
-        if (credits <= 0) {
-            // Friendly upsell
-            const msg = isGuest
-                ? "You've used all your free guest spells! Join the guild to restock your magic."
-                : "You're out of mana (credits)! Wait for your weekly refill or grab a credit pack."
-
-            if (isGuest) {
-                if (window.confirm(msg)) router.push("/sign-up")
-            } else {
-                alert(msg) // Or open cart
-            }
-            return
-        }
-
-        // Deduct credit
-        const success = await deductCredit("story", 1)
-        if (!success) {
-            alert("Fizzle! Something went wrong deducting your magic.")
-            return
-        }
 
         setIsGenerating(true)
         setStory("")
@@ -116,7 +90,6 @@ Out in the garden, Crumbly saw flowers brighter than any jam and grass greener t
                             Weave magical tales with AI.
                         </p>
 
-                        <GuestCreditBanner category="story" className="mx-0 w-full md:w-fit" />
                     </div>
 
                     <div className="space-y-6">
@@ -175,7 +148,7 @@ Out in the garden, Crumbly saw flowers brighter than any jam and grass greener t
                         {/* Generate Button */}
                         <button
                             onClick={handleGenerate}
-                            disabled={isGenerating || !prompt || (!isSignedIn && credits === 0)}
+                            disabled={isGenerating || !prompt}
                             className="w-full py-4 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {isGenerating ? (
@@ -186,15 +159,10 @@ Out in the garden, Crumbly saw flowers brighter than any jam and grass greener t
                             ) : (
                                 <>
                                     <PenTool className="w-5 h-5" />
-                                    Weave Magic {isSignedIn ? "(1 Credit)" : (credits > 0 ? "(Free Guest Spell)" : "(Out of Spells)")}
+                                    Weave Magic (Free)
                                 </>
                             )}
                         </button>
-                        {!isSignedIn && credits === 0 && (
-                            <p className="text-xs text-center text-muted-foreground">
-                                Use your free guest spells? <button onClick={() => router.push('/sign-up')} className="text-primary hover:underline">Join the guild</button> for more!
-                            </p>
-                        )}
                     </div>
                 </div>
 

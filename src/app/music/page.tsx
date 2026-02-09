@@ -1,8 +1,5 @@
-"use client"
-
 import { Music } from "lucide-react"
 import { MusicGenerator } from "@/components/music/MusicGenerator"
-import { GuestCreditBanner } from "@/components/guest-credit-banner"
 
 export default function MusicGeneratorPage() {
     return (
@@ -18,7 +15,6 @@ export default function MusicGeneratorPage() {
                 </p>
             </div>
 
-            <GuestCreditBanner category="music" />
             <MusicGenerator />
         </div>
     )

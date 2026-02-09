@@ -35,7 +35,7 @@ export function Navbar() {
                         <img src="/logo.png" alt="Zastara Logo" className="h-full w-full object-contain relative z-10" />
                     </div>
                     <span className="hidden font-bold sm:inline-block text-xl magic-text">
-                        Zastara AI
+                        Zastara - AI Education & Merch
                     </span>
                 </Link>
                 <div className="flex flex-1 items-center justify-end space-x-4">
@@ -69,21 +69,6 @@ export function Navbar() {
                             </div>
                         </SignedOut>
                         <SignedIn>
-                            <div className="hidden md:block">
-                                <Link href="/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary mr-4">
-                                    Dashboard
-                                </Link>
-                            </div>
-                            <div className="flex items-center gap-2 mr-4 border-l border-white/10 pl-4 h-4 text-muted-foreground">
-                                <button className="flex items-center gap-1 hover:text-primary transition-colors text-xs font-medium">
-                                    <Globe className="w-3.5 h-3.5" />
-                                    <span>EN</span>
-                                </button>
-                                <button className="flex items-center gap-1 hover:text-primary transition-colors text-xs font-medium border-l border-white/10 pl-2">
-                                    <CircleDollarSign className="w-3.5 h-3.5" />
-                                    <span>USD</span>
-                                </button>
-                            </div>
                             <CartIcon />
                             <UserButton afterSignOutUrl="/" />
                         </SignedIn>

@@ -6,10 +6,8 @@ import { Upload, Wand2, Image as ImageIcon, Loader2, Sparkles } from "lucide-rea
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { useAuth } from "@clerk/nextjs"
-import { useCredits } from "@/hooks/useCredits"
-import { useGallery } from "@/hooks/useGallery"
-import { GuestCreditBanner } from "@/components/guest-credit-banner"
 import { useRouter } from "next/navigation"
+import { useGallery } from "@/hooks/useGallery"
 
 const STYLES = [
     { id: "pixar", name: "3D Animation", description: "Pixar/Disney style", image: "/styles/pixar.jpg" },
@@ -50,31 +48,11 @@ export default function ImageStudioPage() {
         setResultImage("/styles/pixar.jpg")
     }
 
-    const { getCredits, deductCredit, loading, isGuest, totalLimit } = useCredits()
     const { addItem } = useGallery()
-    const credits = getCredits("image")
+
 
     const handleGenerate = async () => {
-        if (!isSignedIn && credits <= 0) {
-            const msg = isGuest
-                ? "You've used all your free guest spells! Join the guild to create more."
-                : "Not enough mana (credits)!"
-
-            if (isGuest) {
-                if (confirm(msg)) router.push("/sign-up")
-            } else {
-                alert(msg)
-            }
-            return
-        }
         if (!uploadedImage && !prompt) return
-
-        // Deduct
-        const success = await deductCredit("image", 1)
-        if (!success) {
-            alert("Failed to process credits")
-            return
-        }
 
         setIsGenerating(true)
         setResultImage(null)
@@ -138,7 +116,6 @@ export default function ImageStudioPage() {
                             Image Studio
                         </h1>
                         <p className="text-muted-foreground text-lg mb-6">Transform photos into characters.</p>
-                        <GuestCreditBanner category="image" className="mx-0 w-full md:w-fit" />
                     </div>
 
                     {/* Upload Section */}
@@ -227,7 +204,7 @@ export default function ImageStudioPage() {
                         ) : (
                             <>
                                 <Sparkles className="w-5 h-5" />
-                                Generate Character (2 Credits)
+                                Generate Character (Free)
                             </>
                         )}
                     </button>

@@ -33,7 +33,20 @@ const newsItems = [
 export default function NewsPage() {
     return (
         <div className="container mx-auto px-4 py-20 min-h-screen max-w-4xl">
-            <header className="mb-16 text-center">
+            <header className="mb-16 flex flex-col items-center text-center">
+                <div className="relative mb-8">
+                    <motion.div
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-32 h-32 md:w-40 md:h-40 relative group"
+                    >
+                        <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <img src="/robot-wizard.png" alt="Wizard Robot" className="relative rounded-full shadow-2xl border-4 border-primary/20 object-cover w-full h-full" />
+                        <div className="absolute -bottom-2 -right-2 bg-yellow-500 text-black text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
+                            ORACLE
+                        </div>
+                    </motion.div>
+                </div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs font-bold mb-4">
                     <Zap className="w-3 h-3" />
                     ZASTARA DAILY

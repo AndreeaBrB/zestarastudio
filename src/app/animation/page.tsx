@@ -5,10 +5,8 @@ import { Film, Upload, Sparkles, Loader2, Play } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { useAuth } from "@clerk/nextjs"
-import { useCredits } from "@/hooks/useCredits"
-import { useGallery } from "@/hooks/useGallery"
-import { GuestCreditBanner } from "@/components/guest-credit-banner"
 import { useRouter } from "next/navigation"
+import { useGallery } from "@/hooks/useGallery"
 
 const ANIMATION_STYLES = [
     { id: "pan", name: "Pan & Zoom", desc: "Classic Ken Burns effect" },
@@ -42,31 +40,11 @@ export default function AnimationPage() {
         // We can't fake a video URL easily without a file, so we just prep the inputs
     }
 
-    const { getCredits, deductCredit, loading, isGuest, totalLimit } = useCredits()
     const { addItem } = useGallery()
-    const credits = getCredits("animation")
+
 
     const handleGenerate = async () => {
-        if (!isSignedIn && credits <= 0) {
-            const msg = isGuest
-                ? "You've used all your free guest spells! Join the guild to create more."
-                : "Not enough mana (credits)!"
-
-            if (isGuest) {
-                if (confirm(msg)) router.push("/sign-up")
-            } else {
-                alert(msg)
-            }
-            return
-        }
         if (!uploadedImage) return
-
-        // Deduct
-        const success = await deductCredit("animation", 5)
-        if (!success) {
-            alert("Failed to process credits")
-            return
-        }
 
         setIsGenerating(true)
         setVideoUrl(null)
@@ -128,7 +106,6 @@ export default function AnimationPage() {
                             Animation Bay
                         </h1>
                         <p className="text-muted-foreground text-lg mb-6">Bring your still characters to life.</p>
-                        <GuestCreditBanner category="animation" className="mx-0 w-full md:w-fit" />
                     </div>
 
                     <div className="space-y-6">
@@ -198,7 +175,7 @@ export default function AnimationPage() {
                             ) : (
                                 <>
                                     <Film className="w-5 h-5" />
-                                    Generate Video (5 Credits)
+                                    Generate Video (Free)
                                 </>
                             )}
                         </button>

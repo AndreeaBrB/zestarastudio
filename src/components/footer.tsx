@@ -12,11 +12,17 @@ export function Footer() {
                             <div className="h-8 w-8 relative">
                                 <img src="/logo.png" alt="Zastara Logo" className="h-full w-full object-contain" />
                             </div>
-                            <span className="font-bold text-xl magic-text">Zastara AI</span>
+                            <span className="font-bold text-xl magic-text">Zastara - AI Education & Merch</span>
                         </Link>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-muted-foreground text-sm mb-6">
                             Where the spark of magic meets artificial intelligence.
                         </p>
+                        <div className="relative w-24 h-24 group cursor-help">
+                            <img src="/robot-cool.png" alt="Cool Robot" className="rounded-2xl shadow-lg border border-white/5 opacity-50 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute -top-2 -right-2 bg-black text-[8px] font-bold px-2 py-0.5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                STAY COOL
+                            </div>
+                        </div>
                     </div>
 
                     {/* Product */}
@@ -52,7 +58,7 @@ export function Footer() {
                 <div className="mt-12 pt-8 border-t border-border/50 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div>
                         <p className="text-sm text-muted-foreground mb-2">
-                            © {new Date().getFullYear()} Zastara AI. All rights reserved.
+                            © {new Date().getFullYear()} Zastara - AI Education & Merch. All rights reserved.
                         </p>
                         <p className="text-[10px] text-muted-foreground/50 max-w-md italic">
                             * Magical Disclaimer: Zastara AI is not responsible for any accidental dragon summonings, spontaneous levitation, or sudden urges to speak in binary. My merchandise may contain trace amounts of pixie dust. Use at your own risk of becoming too awesome.
